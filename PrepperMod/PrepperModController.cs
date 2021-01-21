@@ -13,17 +13,27 @@ namespace PrepperMod
 {
     public class PrepperModController : MonoBehaviour
     {
-        private bool gameIsRunning = false;
-        private bool timeIsStopped = false;
+        public bool gameIsRunning = false;
+        public bool timeIsStopped = false;
+
+        private float storedChangeTimeScaleSpeed = 3f;
+        private float storedTime = 0f;
 
         internal void Open()
         {
+            storedChangeTimeScaleSpeed = TimeControler.main.changeTimeScaleSpeed;
             this.gameIsRunning = true;
         }
 
         internal void Close()
         {
             this.gameIsRunning = false;
+        }
+
+        internal void ChangeTimeScaleIE(float scale, float speed)
+        {
+            PrepperMod.Log("ChangeTimeScaleIE: scale: " + scale.ToString());
+            PrepperMod.Log("ChangeTimeScaleIE: speed: " + speed.ToString());
         }
 
         internal void BindIncreaseTime()
@@ -33,7 +43,7 @@ namespace PrepperMod
                 return;
             }
 
-            PrepperMod.Log("DEBUG: Increase time.");
+            PrepperMod.Log("Increase time.");
         }
 
         internal void BindDecreaseTime()
@@ -43,7 +53,7 @@ namespace PrepperMod
                 return;
             }
 
-            PrepperMod.Log("DEBUG: Decrease time.");
+            PrepperMod.Log("Decrease time.");
         }
 
         internal void BindToggleTimeStop()
@@ -63,11 +73,20 @@ namespace PrepperMod
 
             if (timeIsStopped)
             {
+                TimeControler.main.changeTimeScaleSpeed = 5f;
                 TimeControler.main.ChangeTimeScale(0f);
+
+                storedTime = Time.time;
             } else
             {
+                TimeControler.main.changeTimeScaleSpeed = this.storedChangeTimeScaleSpeed;
                 TimeControler.main.ChangeTimeScale(1f);
             }
+
+            PrepperMod.Log("storedTime: " + storedTime.ToString());
+
+            PrepperMod.Log("storedChangeTimeScaleSpeed: " + this.storedChangeTimeScaleSpeed.ToString());
+            PrepperMod.Log("TimeControler.main.changeTimeScaleSpeed: " + TimeControler.main.changeTimeScaleSpeed.ToString());
         }
 
         public static PrepperModController Instance { get; set; } = new PrepperModController();

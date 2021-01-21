@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PrepperMod
 {
-    [UMFHarmony(2)] //Set this to the number of harmony patches in your mod.
+    [UMFHarmony(4)] //Set this to the number of harmony patches in your mod.
     [UMFScript]
     class PrepperMod : MonoBehaviour
     {
