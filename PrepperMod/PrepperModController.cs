@@ -11,7 +11,6 @@ using HarmonyLib;
 
 namespace PrepperMod
 {
-    [UMFScript]
     public class PrepperModController : MonoBehaviour
     {
         public bool gameIsRunning = false;
@@ -24,6 +23,8 @@ namespace PrepperMod
         private int storedDays = 0;
 
         private float storedMinuteFloat = 0f;
+
+        public float update;
 
         internal void Open()
         {
@@ -81,44 +82,42 @@ namespace PrepperMod
             this.UpdateTimeStop();
         }
 
-        public void UpdateTimeStop()
+        internal void UpdateTimeStop()
         {
             PrepperMod.Log("Toggle time-stop. Time is: " + (timeIsStopped ? "STOPPED" : "STARTED"));
 
             if (timeIsStopped)
             {
-                TimeControler.main.changeTimeScaleSpeed = 5f;
-                TimeControler.main.ChangeTimeScale(0f);
-
                 storedMinutes = TimeControler.realTime.minutes;
                 storedDays = TimeControler.realTime.days;
                 storedHours = TimeControler.realTime.hours;
                 storedMinuteFloat = TimeControler.main.minuteTime;
             } else
             {
-                TimeControler.main.changeTimeScaleSpeed = this.storedChangeTimeScaleSpeed;
-                TimeControler.main.ChangeTimeScale(1f);
-
                 storedMinutes = 0;
                 storedDays = 0;
                 storedHours = 0;
                 storedMinuteFloat = 0f;
             }
-
-            PrepperMod.Log("storedMinutes: " + storedMinutes.ToString());
-            PrepperMod.Log("storedDays: " + storedDays.ToString());
-            PrepperMod.Log("storedHours: " + storedHours.ToString());
-            PrepperMod.Log("storedMinuteFloat: " + storedMinuteFloat.ToString());
         }
 
-        private void Update()
+        public void OnUpdate()
         {
             if (gameIsRunning == false)
             {
                 return;
             }
 
-            if (timeIsStopped && storedMinutes != 0)
+            var shouldUpdateTime = false;
+            update += Time.deltaTime;
+
+            if (update > 0.5f)
+            {
+                shouldUpdateTime = true;
+                update = 0.0f;     
+            }
+
+            if (timeIsStopped && shouldUpdateTime)
             {
                 TimeControler.realTime.minutes = storedMinutes;
                 TimeControler.realTime.days = storedDays;

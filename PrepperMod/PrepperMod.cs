@@ -25,5 +25,10 @@ namespace PrepperMod
 		{
 			Log("PrepperMod v" + UMFMod.GetModVersion().ToString(), true);
 		}
+
+        void Update()
+        {
+            PrepperModController.Instance.OnUpdate();
+        }
 	}
 }
