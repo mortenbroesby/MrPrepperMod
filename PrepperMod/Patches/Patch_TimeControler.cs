@@ -12,17 +12,4 @@ namespace PrepperMod.Patches
             PrepperModController.Instance.ChangeTimeScaleIE(scale, speed);
         }
     }
-
-    [HarmonyPatch(typeof(TimeControler))]
-    [HarmonyPatch("Stop")]
-    static class Patch_Stop
-    {
-        public static bool Prefix()
-        {
-            var timeIsStopped = PrepperModController.Instance.timeIsStopped;
-            PrepperMod.Log("timeIsStopped: " + timeIsStopped.ToString());
-
-            return timeIsStopped == false;
-        }
-    }
 }

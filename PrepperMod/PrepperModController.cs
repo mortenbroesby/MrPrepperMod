@@ -17,23 +17,33 @@ namespace PrepperMod
         public bool timeIsStopped = false;
 
         private float storedChangeTimeScaleSpeed = 3f;
+
+        private int storedMinutes = 0;
+        private int storedHours = 0;
+        private int storedDays = 0;
+
         private float storedTime = 0f;
 
         internal void Open()
         {
             storedChangeTimeScaleSpeed = TimeControler.main.changeTimeScaleSpeed;
-            this.gameIsRunning = true;
+
+            storedMinutes = TimeControler.realTime.minutes;
+            storedDays = TimeControler.realTime.days;
+            storedHours = TimeControler.realTime.hours;
+
+            gameIsRunning = true;
         }
 
         internal void Close()
         {
-            this.gameIsRunning = false;
+            gameIsRunning = false;
         }
 
         internal void ChangeTimeScaleIE(float scale, float speed)
         {
-            PrepperMod.Log("ChangeTimeScaleIE: scale: " + scale.ToString());
-            PrepperMod.Log("ChangeTimeScaleIE: speed: " + speed.ToString());
+            // PrepperMod.Log("ChangeTimeScaleIE: scale: " + scale.ToString());
+            // PrepperMod.Log("ChangeTimeScaleIE: speed: " + speed.ToString());
         }
 
         internal void BindIncreaseTime()
@@ -64,6 +74,7 @@ namespace PrepperMod
             }
 
             timeIsStopped = !timeIsStopped;
+
             this.UpdateTimeStop();
         }
 
@@ -76,6 +87,10 @@ namespace PrepperMod
                 TimeControler.main.changeTimeScaleSpeed = 5f;
                 TimeControler.main.ChangeTimeScale(0f);
 
+                storedMinutes = TimeControler.realTime.minutes;
+                storedDays = TimeControler.realTime.days;
+                storedHours = TimeControler.realTime.hours;
+
                 storedTime = Time.time;
             } else
             {
@@ -83,10 +98,11 @@ namespace PrepperMod
                 TimeControler.main.ChangeTimeScale(1f);
             }
 
-            PrepperMod.Log("storedTime: " + storedTime.ToString());
+            PrepperMod.Log("storedMinutes: " + storedMinutes.ToString());
+            PrepperMod.Log("storedDays: " + storedDays.ToString());
+            PrepperMod.Log("storedHours: " + storedHours.ToString());
 
-            PrepperMod.Log("storedChangeTimeScaleSpeed: " + this.storedChangeTimeScaleSpeed.ToString());
-            PrepperMod.Log("TimeControler.main.changeTimeScaleSpeed: " + TimeControler.main.changeTimeScaleSpeed.ToString());
+            PrepperMod.Log("storedTime: " + storedTime.ToString());
         }
 
         public static PrepperModController Instance { get; set; } = new PrepperModController();
