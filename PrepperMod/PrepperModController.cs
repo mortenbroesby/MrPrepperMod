@@ -13,26 +13,26 @@ namespace PrepperMod
 {
     public class PrepperModController : MonoBehaviour
     {
-        private TimeControler timeController;
+        public bool gameIsRunning = false;
 
-        private bool gameIsRunning = false;
-        private bool isTimeStopped = false;
+        public bool timeIsStopped = false;
 
-        internal void SetTimeController(TimeControler __instance)
+        private float storedChangeTimeScaleSpeed = 3f;
+
+        internal void Open()
         {
+            storedChangeTimeScaleSpeed = TimeControler.main.changeTimeScaleSpeed;
             gameIsRunning = true;
-            timeController = __instance;
         }
 
         internal void Close()
         {
             gameIsRunning = false;
-            timeController = null;
         }
 
         internal void BindIncreaseTime()
         {
-            if (!this.gameIsRunning)
+            if (gameIsRunning == false)
             {
                 return;
             }
@@ -42,7 +42,7 @@ namespace PrepperMod
 
         internal void BindDecreaseTime()
         {
-            if (!this.gameIsRunning)
+            if (gameIsRunning == false)
             {
                 return;
             }
@@ -52,21 +52,37 @@ namespace PrepperMod
 
         internal void BindToggleTimeStop()
         {
-            if (!this.gameIsRunning)
+            if (gameIsRunning == false)
             {
                 return;
             }
 
-            isTimeStopped = !isTimeStopped;
+            timeIsStopped = !timeIsStopped;
 
-            this.UpdateTimeStop();
+            UpdateTimeStop();
         }
 
         public void UpdateTimeStop()
         {
+            if (timeIsStopped)
+            {
+                PrepperMod.Log("Toggle time-stop. Status: Time is STOPPED!");
 
-            PrepperMod.Log("DEBUG: Toggle time-stop. Status: " + (isTimeStopped ? "on" : "off"));
-            UMFGUI.AddConsoleText("Successfully turned Time " + (isTimeStopped ? "on" : "off") + ".");
+                TimeControler.main.targetTimeScale = 0f;
+                TimeControler.main.timeScaleOnUnblock = 0f;
+                TimeControler.main.changeTimeScaleSpeed = 0f;
+
+                TimeControler.main.ChangeTimeScale(0f);
+            } else
+            {
+                PrepperMod.Log("Toggle time-stop. Status: Time is STARTED!");
+
+                TimeControler.main.changeTimeScaleSpeed = storedChangeTimeScaleSpeed;
+                TimeControler.main.targetTimeScale = 1f;
+                TimeControler.main.timeScaleOnUnblock = 1f;
+
+                TimeControler.main.ChangeTimeScale(1f);
+            }
         }
 
         public static PrepperModController Instance { get; set; } = new PrepperModController();

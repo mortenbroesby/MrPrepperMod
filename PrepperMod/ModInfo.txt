@@ -1,3 +1,7 @@
-This file is for displaying info, news and changelogs to your users.
-The text in this file is shown everytime a user installs the mod and starts the game,
-and everytime the mod is automatically updated by UMF. (If auto update is used.)
+This mod is in extremely early alpha.
+Do not expect much for now...
+
+Plan:
+- Toggle Stop Time
+- Skip Time Forward
+- Skip Time Backwards

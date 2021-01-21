@@ -57,9 +57,20 @@ namespace PrepperMod
 
         internal void UpdateBinds()
         {
-            for (int i = 0; i < KeysIncTime.Length; i++) UMFGUI.RegisterBind("KeysIncTime" + i.ToString(), KeysIncTime[i], PrepperModController.Instance.BindIncreaseTime);
-            for (int i = 0; i < KeysDecTime.Length; i++) UMFGUI.RegisterBind("KeysDecTime" + i.ToString(), KeysDecTime[i], PrepperModController.Instance.BindDecreaseTime);
-            for (int i = 0; i < KeysStopTime.Length; i++) UMFGUI.RegisterBind("KeysStopTime" + i.ToString(), KeysStopTime[i], PrepperModController.Instance.BindToggleTimeStop);
+            for (int i = 0; i < KeysIncTime.Length; i++)
+            {
+                UMFGUI.RegisterBind("KeysIncTime" + i.ToString(), KeysIncTime[i], PrepperModController.Instance.BindIncreaseTime);
+            }
+                
+            for (int i = 0; i < KeysDecTime.Length; i++)
+            {
+                UMFGUI.RegisterBind("KeysDecTime" + i.ToString(), KeysDecTime[i], PrepperModController.Instance.BindDecreaseTime);
+            }
+              
+            for (int i = 0; i < KeysStopTime.Length; i++)
+            {
+                UMFGUI.RegisterBind("KeysStopTime" + i.ToString(), KeysStopTime[i], PrepperModController.Instance.BindToggleTimeStop);
+            }
         }
 
         public static PrepperModConfig Instance { get; } = new PrepperModConfig();
