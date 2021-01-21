@@ -13,21 +13,17 @@ namespace PrepperMod
 {
     public class PrepperModController : MonoBehaviour
     {
-        public bool gameIsRunning = false;
-
-        public bool timeIsStopped = false;
-
-        private float storedChangeTimeScaleSpeed = 3f;
+        private bool gameIsRunning = false;
+        private bool timeIsStopped = false;
 
         internal void Open()
         {
-            storedChangeTimeScaleSpeed = TimeControler.main.changeTimeScaleSpeed;
-            gameIsRunning = true;
+            this.gameIsRunning = true;
         }
 
         internal void Close()
         {
-            gameIsRunning = false;
+            this.gameIsRunning = false;
         }
 
         internal void BindIncreaseTime()
@@ -58,29 +54,18 @@ namespace PrepperMod
             }
 
             timeIsStopped = !timeIsStopped;
-
-            UpdateTimeStop();
+            this.UpdateTimeStop();
         }
 
         public void UpdateTimeStop()
         {
+            PrepperMod.Log("Toggle time-stop. Time is: " + (timeIsStopped ? "STOPPED" : "STARTED"));
+
             if (timeIsStopped)
             {
-                PrepperMod.Log("Toggle time-stop. Status: Time is STOPPED!");
-
-                TimeControler.main.targetTimeScale = 0f;
-                TimeControler.main.timeScaleOnUnblock = 0f;
-                TimeControler.main.changeTimeScaleSpeed = 0f;
-
                 TimeControler.main.ChangeTimeScale(0f);
             } else
             {
-                PrepperMod.Log("Toggle time-stop. Status: Time is STARTED!");
-
-                TimeControler.main.changeTimeScaleSpeed = storedChangeTimeScaleSpeed;
-                TimeControler.main.targetTimeScale = 1f;
-                TimeControler.main.timeScaleOnUnblock = 1f;
-
                 TimeControler.main.ChangeTimeScale(1f);
             }
         }
