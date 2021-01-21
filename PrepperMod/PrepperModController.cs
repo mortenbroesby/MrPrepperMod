@@ -11,6 +11,7 @@ using HarmonyLib;
 
 namespace PrepperMod
 {
+    [UMFScript]
     public class PrepperModController : MonoBehaviour
     {
         public bool gameIsRunning = false;
@@ -22,7 +23,7 @@ namespace PrepperMod
         private int storedHours = 0;
         private int storedDays = 0;
 
-        private float storedTime = 0f;
+        private float storedMinuteFloat = 0f;
 
         internal void Open()
         {
@@ -31,6 +32,8 @@ namespace PrepperMod
             storedMinutes = TimeControler.realTime.minutes;
             storedDays = TimeControler.realTime.days;
             storedHours = TimeControler.realTime.hours;
+
+            storedMinuteFloat = TimeControler.main.minuteTime;
 
             gameIsRunning = true;
         }
@@ -90,19 +93,39 @@ namespace PrepperMod
                 storedMinutes = TimeControler.realTime.minutes;
                 storedDays = TimeControler.realTime.days;
                 storedHours = TimeControler.realTime.hours;
-
-                storedTime = Time.time;
+                storedMinuteFloat = TimeControler.main.minuteTime;
             } else
             {
                 TimeControler.main.changeTimeScaleSpeed = this.storedChangeTimeScaleSpeed;
                 TimeControler.main.ChangeTimeScale(1f);
+
+                storedMinutes = 0;
+                storedDays = 0;
+                storedHours = 0;
+                storedMinuteFloat = 0f;
             }
 
             PrepperMod.Log("storedMinutes: " + storedMinutes.ToString());
             PrepperMod.Log("storedDays: " + storedDays.ToString());
             PrepperMod.Log("storedHours: " + storedHours.ToString());
+            PrepperMod.Log("storedMinuteFloat: " + storedMinuteFloat.ToString());
+        }
 
-            PrepperMod.Log("storedTime: " + storedTime.ToString());
+        private void Update()
+        {
+            if (gameIsRunning == false)
+            {
+                return;
+            }
+
+            if (timeIsStopped && storedMinutes != 0)
+            {
+                TimeControler.realTime.minutes = storedMinutes;
+                TimeControler.realTime.days = storedDays;
+                TimeControler.realTime.hours = storedHours;
+                TimeControler.main.minuteTime = storedMinuteFloat;
+            }
+
         }
 
         public static PrepperModController Instance { get; set; } = new PrepperModController();

@@ -10,8 +10,6 @@ namespace PrepperMod
     [UMFScript]
     class PrepperMod : MonoBehaviour
     {
-        private float update;
-
         internal static void Log(string text, bool clean = false)
         {
             using (UMFLog log = new UMFLog()) log.Log(text, clean);
@@ -27,17 +25,5 @@ namespace PrepperMod
 		{
 			Log("PrepperMod v" + UMFMod.GetModVersion().ToString(), true);
 		}
-
-        void Update()
-        {
-            update += Time.deltaTime;
-
-            if (update > 1.0f)
-            {
-                update = 0.0f;
-
-                Log("Update time: " + update.ToString());
-            }
-        }
 	}
 }
