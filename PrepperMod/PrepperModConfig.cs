@@ -5,9 +5,9 @@ namespace PrepperMod
 {
     public class PrepperModConfig
     {
-        private static readonly string configVersion = "1.1";
+        private static readonly string configVersion = "0.1";
 
-        public static float ModdedTimeScale = 0f;
+        public static int SkipDelta = 15;
 
         private static string[] KeysIncTime;
         private static string[] KeysDecTime;
@@ -38,13 +38,15 @@ namespace PrepperMod
 
                     PrepperMod.Log("Finished UMF Settings.");
 
-                    // ModdedTimeScale = config.Read("Modded timeScale", new UMFConfigFloat(0f, 0f, 3f), "The Modded Time-scale In-game.");
 
-                    KeysIncTime = config.Read("Increment Time", new UMFConfigStringArray(new string[0], true), "The key(s) used to increase time.");
-                    KeysDecTime = config.Read("Decrement Time", new UMFConfigStringArray(new string[0], true), "The key(s) used to decrease time.");
+                    KeysIncTime = config.Read("Skip Time Forwards", new UMFConfigStringArray(new string[0], true), "The key(s) used to skip forwards in time.");
+                    KeysDecTime = config.Read("Skip Time Backwards", new UMFConfigStringArray(new string[0], true), "The key(s) used to skip backwards in time.");
                     KeysStopTime = config.Read("Toggle Time-Stop", new UMFConfigStringArray(new string[0], true), "The key(s) used to toggle stopped time.");
 
+                    SkipDelta = config.Read("Time skip delta", new UMFConfigInt(15, 5, 60), "How far to skip each time.");
+
                     UpdateBinds();
+                    PrepperModController.Instance.SetSkipDelta(SkipDelta);
 
                     PrepperMod.Log("Finished loading settings.");
                 }
