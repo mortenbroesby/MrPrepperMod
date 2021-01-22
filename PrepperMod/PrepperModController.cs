@@ -28,18 +28,12 @@ namespace PrepperMod
         #endregion
 
         #region Public Functions
-        public void Open()
+        public void GameIsRunning(bool newState)
         {
-            storedTime = TimeControler.realTime;
-            gameIsRunning = true;
+            gameIsRunning = newState;
         }
 
-        public void Close()
-        {
-            gameIsRunning = false;
-        }
-
-        public void SetSkipDelta(int delta)
+        public void SkipDelta(int delta)
         {
             this.skipDelta = delta;
         }
@@ -55,24 +49,18 @@ namespace PrepperMod
         #region Keybind Functions
         internal void BindIncreaseTime()
         {
-            if (gameIsRunning == false)
+            if (gameIsRunning)
             {
-                return;
+                this.SkipForwards();
             }
-
-            PrepperMod.Log("Increase time.");
-
-            this.SkipForwards();
         }
 
         internal void BindDecreaseTime()
         {
-            if (gameIsRunning == false)
+            if (gameIsRunning)
             {
-                return;
+                this.SkipBackwards();
             }
-
-            this.SkipBackwards();
         }
         internal void BindToggleTimeStop()
         {
@@ -84,6 +72,15 @@ namespace PrepperMod
         #endregion
 
         #region Private Functions
+        private void ToggleAndStoreTime()
+        {
+            timeIsStopped = !timeIsStopped;
+
+            PrepperMod.Log("Time is: " + (timeIsStopped ? "STOPPED" : "STARTED"));
+
+            storedTime = TimeControler.realTime;
+        }
+
         private void SkipForwards()
         {
             PrepperMod.Log("Skip Forwards.");
@@ -133,17 +130,6 @@ namespace PrepperMod
             storedTime = newTime;
 
             TimeControler.realTime = newTime;
-        }
-        private void ToggleAndStoreTime()
-        {
-            timeIsStopped = !timeIsStopped;
-
-            PrepperMod.Log("Toggle time-stop. Time is: " + (timeIsStopped ? "STOPPED" : "STARTED"));
-
-            if (timeIsStopped)
-            {
-                storedTime = TimeControler.realTime;
-            }
         }
         #endregion
 

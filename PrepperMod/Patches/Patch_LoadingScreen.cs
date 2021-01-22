@@ -10,7 +10,7 @@ namespace PrepperMod.Patches
         public static void Postfix()
         {
             PrepperMod.Log("Game Loaded");
-            PrepperModController.Instance.Open();
+            PrepperModController.Instance.GameIsRunning(true);
         }
     }
 
@@ -21,7 +21,7 @@ namespace PrepperMod.Patches
         public static void Postfix()
         {
             PrepperMod.Log("Menu Loaded");
-            PrepperModController.Instance.Close();
+            PrepperModController.Instance.GameIsRunning(false);
         }
     }
 }

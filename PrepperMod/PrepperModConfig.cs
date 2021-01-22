@@ -45,7 +45,7 @@ namespace PrepperMod
                     UpdateBinds();
 
                     SkipDelta = config.Read("Time skip delta", new UMFConfigInt(15, 5, 60), "How far to skip each time.");
-                    PrepperModController.Instance.SetSkipDelta(SkipDelta);
+                    PrepperModController.Instance.SkipDelta(SkipDelta);
 
                     PrepperMod.Log("Finished loading settings.");
                 }
