@@ -111,6 +111,8 @@ namespace PrepperMod
 
             PrepperMod.Log("Skipping to time: " + newTime.ToLongString());
 
+            storedTime = newTime;
+
             TimeControler.realTime = newTime;
         }
 
