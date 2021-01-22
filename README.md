@@ -7,8 +7,12 @@ The mod can currently:
 - Skip Time Forward
 - Skip Time Backwards
 
+Future plans:
+- To be determined...
 
-**NOTE: This is only the source for the mod.**
+---
+
+**This is only the source for the mod.**
 
 #### Build Steps for Windows:
 1. Install [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/) or higher.
