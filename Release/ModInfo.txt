@@ -1,7 +1,0 @@
-This mod is in extremely early alpha.
-Do not expect much for now...
-
-Plan:
-- Toggle Stop Time
-- Skip Time Forward
-- Skip Time Backwards
