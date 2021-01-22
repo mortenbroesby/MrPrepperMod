@@ -1,6 +1,14 @@
 # Mr. Prepper Mod
 
-**This is only the source for the mod.**
+This mod is a catch-all to explore modding within the Mr. Prepper game.
+
+The mod can currently:
+- Toggle Stop Time
+- Skip Time Forward
+- Skip Time Backwards
+
+
+**NOTE: This is only the source for the mod.**
 
 #### Build Steps for Windows:
 1. Install [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/) or higher.
