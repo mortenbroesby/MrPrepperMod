@@ -1,5 +1,0 @@
-D:\PrepperMod\PrepperMod\obj\Release\PrepperMod.csprojAssemblyReference.cache
-D:\PrepperMod\PrepperMod\obj\Release\PrepperMod.csproj.CoreCompileInputs.cache
-D:\PrepperMod\Release\ModInfo.txt
-D:\PrepperMod\Release\PrepperMod.dll
-D:\PrepperMod\PrepperMod\obj\Release\PrepperMod.dll
