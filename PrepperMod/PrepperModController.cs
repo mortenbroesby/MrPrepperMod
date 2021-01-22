@@ -13,6 +13,7 @@ namespace PrepperMod
 {
     public class PrepperModController : MonoBehaviour
     {
+        #region Variables
         public bool gameIsRunning = false;
         public bool timeIsStopped = false;
 
@@ -24,20 +25,34 @@ namespace PrepperMod
             hours = 12,
             days = 0
         };
+        #endregion
 
-        public float update;
-
-        internal void Open()
+        #region Public Functions
+        public void Open()
         {
             storedTime = TimeControler.realTime;
             gameIsRunning = true;
         }
 
-        internal void Close()
+        public void Close()
         {
             gameIsRunning = false;
         }
 
+        public void SetSkipDelta(int delta)
+        {
+            this.skipDelta = delta;
+        }
+        public void OnUpdate()
+        {
+            if (gameIsRunning && timeIsStopped)
+            {
+                TimeControler.realTime = storedTime;
+            }
+        }
+        #endregion
+
+        #region Keybind Functions
         internal void BindIncreaseTime()
         {
             if (gameIsRunning == false)
@@ -59,25 +74,29 @@ namespace PrepperMod
 
             this.SkipBackwards();
         }
-
-        public void SetSkipDelta(int delta)
+        internal void BindToggleTimeStop()
         {
-            this.skipDelta = delta;
+            if (gameIsRunning)
+            {
+                this.ToggleAndStoreTime();
+            }
         }
+        #endregion
 
-        public void SkipForwards()
+        #region Private Functions
+        private void SkipForwards()
         {
             PrepperMod.Log("Skip Forwards.");
             SkipTimeInMinutes(skipDelta);
         }
 
-        public void SkipBackwards()
+        private void SkipBackwards()
         {
             PrepperMod.Log("Skip Backwards.");
             SkipTimeInMinutes(-skipDelta);
         }
 
-        public void SkipTimeInMinutes(int deltaTime)
+        private void SkipTimeInMinutes(int deltaTime)
         {
             TimeControler.DayTime newTime = TimeControler.realTime;
 
@@ -115,22 +134,10 @@ namespace PrepperMod
 
             TimeControler.realTime = newTime;
         }
-
-
-        internal void BindToggleTimeStop()
+        private void ToggleAndStoreTime()
         {
-            if (gameIsRunning == false)
-            {
-                return;
-            }
-
             timeIsStopped = !timeIsStopped;
 
-            this.StoreTime();
-        }
-
-        internal void StoreTime()
-        {
             PrepperMod.Log("Toggle time-stop. Time is: " + (timeIsStopped ? "STOPPED" : "STARTED"));
 
             if (timeIsStopped)
@@ -138,29 +145,7 @@ namespace PrepperMod
                 storedTime = TimeControler.realTime;
             }
         }
-
-        public void OnUpdate()
-        {
-            if (gameIsRunning == false)
-            {
-                return;
-            }
-
-            var shouldUpdateTime = false;
-            update += Time.deltaTime;
-
-            if (update > 0.5f)
-            {
-                shouldUpdateTime = true;
-                update = 0.0f;     
-            }
-
-            if (timeIsStopped && shouldUpdateTime)
-            {
-                TimeControler.realTime = storedTime;
-            }
-
-        }
+        #endregion
 
         public static PrepperModController Instance { get; set; } = new PrepperModController();
     }

@@ -38,14 +38,13 @@ namespace PrepperMod
 
                     PrepperMod.Log("Finished UMF Settings.");
 
-
                     KeysIncTime = config.Read("Skip Time Forwards", new UMFConfigStringArray(new string[0], true), "The key(s) used to skip forwards in time.");
                     KeysDecTime = config.Read("Skip Time Backwards", new UMFConfigStringArray(new string[0], true), "The key(s) used to skip backwards in time.");
                     KeysStopTime = config.Read("Toggle Time-Stop", new UMFConfigStringArray(new string[0], true), "The key(s) used to toggle stopped time.");
 
-                    SkipDelta = config.Read("Time skip delta", new UMFConfigInt(15, 5, 60), "How far to skip each time.");
-
                     UpdateBinds();
+
+                    SkipDelta = config.Read("Time skip delta", new UMFConfigInt(15, 5, 60), "How far to skip each time.");
                     PrepperModController.Instance.SetSkipDelta(SkipDelta);
 
                     PrepperMod.Log("Finished loading settings.");
