@@ -16,24 +16,19 @@ namespace PrepperMod
         public bool gameIsRunning = false;
         public bool timeIsStopped = false;
 
-        private float storedChangeTimeScaleSpeed = 3f;
-
         private int storedMinutes = 0;
         private int storedHours = 0;
-        private int storedDays = 0;
 
         private float storedMinuteFloat = 0f;
+
+        private static int skipAmountInMinutes = 15;
 
         public float update;
 
         internal void Open()
         {
-            storedChangeTimeScaleSpeed = TimeControler.main.changeTimeScaleSpeed;
-
             storedMinutes = TimeControler.realTime.minutes;
-            storedDays = TimeControler.realTime.days;
             storedHours = TimeControler.realTime.hours;
-
             storedMinuteFloat = TimeControler.main.minuteTime;
 
             gameIsRunning = true;
@@ -44,12 +39,6 @@ namespace PrepperMod
             gameIsRunning = false;
         }
 
-        internal void ChangeTimeScaleIE(float scale, float speed)
-        {
-            // PrepperMod.Log("ChangeTimeScaleIE: scale: " + scale.ToString());
-            // PrepperMod.Log("ChangeTimeScaleIE: speed: " + speed.ToString());
-        }
-
         internal void BindIncreaseTime()
         {
             if (gameIsRunning == false)
@@ -58,6 +47,8 @@ namespace PrepperMod
             }
 
             PrepperMod.Log("Increase time.");
+
+            this.SkipForwards();
         }
 
         internal void BindDecreaseTime()
@@ -68,7 +59,100 @@ namespace PrepperMod
             }
 
             PrepperMod.Log("Decrease time.");
+
+            this.SkipBackwards();
         }
+
+        public void SkipForwards()
+        {
+            TimeControler.DayTime newTime = new TimeControler.DayTime
+            {
+                minutes = TimeControler.realTime.minutes,
+                hours = TimeControler.realTime.hours,
+                days = TimeControler.realTime.days
+            };
+
+            newTime.minutes = TimeControler.realTime.minutes + skipAmountInMinutes;
+            if (newTime.minutes >= 60)
+            {
+                newTime.hours += newTime.minutes / 60;
+                newTime.minutes %= 60;
+            }
+            if (newTime.hours >= 24)
+            {
+                newTime.days += newTime.hours / 24;
+                newTime.hours %= 24;
+            }
+
+            var targetValue = new TimeControler.DayTime
+            {
+                minutes = newTime.minutes,
+                hours = newTime.hours,
+                days = newTime.days
+            }.ToMinutes();
+
+            PrepperMod.Log("newTime.days: " + newTime.days.ToString());
+            PrepperMod.Log("TimeControler.realTime.days: " + TimeControler.realTime.days.ToString());
+
+            if (newTime.days > TimeControler.realTime.days)
+            {
+                PrepperMod.Log("NO TIME SKIP");
+                return;
+            }
+
+            PrepperMod.Log("TIME SKIP");
+
+            PrepperMod.Log("targetValue: " + targetValue.ToString());
+
+            TimeControler.realTime.minutes = newTime.minutes;
+            TimeControler.realTime.hours = newTime.hours;
+        }
+
+        public void SkipBackwards()
+        {
+            TimeControler.DayTime newTime = new TimeControler.DayTime
+            {
+                minutes = TimeControler.realTime.minutes,
+                hours = TimeControler.realTime.hours,
+                days = TimeControler.realTime.days
+            };
+
+            newTime.minutes = TimeControler.realTime.minutes - skipAmountInMinutes;
+            if (newTime.minutes < 0)
+            {
+                newTime.hours--;
+                newTime.minutes += 60;
+            }
+            if (newTime.hours < 0)
+            {
+                newTime.days--;
+                newTime.hours += 24;
+            }
+
+            var targetValue = new TimeControler.DayTime
+            {
+                minutes = newTime.minutes,
+                hours = newTime.hours,
+                days = newTime.days
+            }.ToMinutes();
+
+            PrepperMod.Log("newTime.days: " + newTime.days.ToString());
+            PrepperMod.Log("TimeControler.realTime.days: " + TimeControler.realTime.days.ToString());
+
+            if (newTime.days < TimeControler.realTime.days)
+            {
+                PrepperMod.Log("NO TIME SKIP");
+                return;
+            }
+
+            PrepperMod.Log("TIME SKIP");
+
+            PrepperMod.Log("targetValue: " + targetValue.ToString());
+
+            TimeControler.realTime.minutes = newTime.minutes;
+            TimeControler.realTime.hours = newTime.hours;
+        }
+
 
         internal void BindToggleTimeStop()
         {
@@ -89,13 +173,11 @@ namespace PrepperMod
             if (timeIsStopped)
             {
                 storedMinutes = TimeControler.realTime.minutes;
-                storedDays = TimeControler.realTime.days;
                 storedHours = TimeControler.realTime.hours;
                 storedMinuteFloat = TimeControler.main.minuteTime;
             } else
             {
                 storedMinutes = 0;
-                storedDays = 0;
                 storedHours = 0;
                 storedMinuteFloat = 0f;
             }
@@ -120,7 +202,6 @@ namespace PrepperMod
             if (timeIsStopped && shouldUpdateTime)
             {
                 TimeControler.realTime.minutes = storedMinutes;
-                TimeControler.realTime.days = storedDays;
                 TimeControler.realTime.hours = storedHours;
                 TimeControler.main.minuteTime = storedMinuteFloat;
             }
