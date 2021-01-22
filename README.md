@@ -12,6 +12,8 @@ Future plans:
 
 ---
 
+## Description
+
 **This is only the source for the mod.**
 
 #### Build Steps for Windows:
